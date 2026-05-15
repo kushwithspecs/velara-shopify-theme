@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -6,26 +15,49 @@
         "headline": "VELARA",
         "tag_1": "Skincare",
         "tag_2": "Premium",
-        "accent": "Essence"
+        "tag_3": "Cruelty-free",
+        "accent": "Essence",
+        "sub": "Skincare that's gentle on your skin and loud on personality."
       }
     },
     "ticker": {
       "type": "ticker",
       "blocks": {
-        "t1": { "type": "item", "settings": { "text": "NEW ARRIVALS" } },
-        "t2": { "type": "item", "settings": { "text": "20% OFF" } },
-        "t3": { "type": "item", "settings": { "text": "FREE SHIPPING" } },
-        "t4": { "type": "item", "settings": { "text": "·" } }
+        "t1": {
+          "type": "item",
+          "settings": {
+            "text": "NEW ARRIVALS"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "text": "20% OFF"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "text": "FREE SHIPPING"
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "text": "·"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4"]
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {}
     },
     "brand_intro": {
       "type": "brand-intro",
-      "settings": {
-        "line_1": "VELARA IS A MODERN SKINCARE ATELIER",
-        "line_2": "best formulas for",
-        "line_3": "and skin that glows."
-      },
       "blocks": {
         "c1": {
           "type": "card",
@@ -42,7 +74,15 @@
           }
         }
       },
-      "block_order": ["c1", "c2"]
+      "block_order": [
+        "c1",
+        "c2"
+      ],
+      "settings": {
+        "line_1": "VELARA IS A MODERN SKINCARE ATELIER",
+        "line_2": "best formulas for",
+        "line_3": "and skin that glows."
+      }
     },
     "categories": {
       "type": "category-grid",
@@ -50,9 +90,11 @@
         "cat1": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/model-laughs-barefoot.jpg",
             "name": "Cleansers",
             "subtitle": "Start fresh",
-            "link": "/collections/cleansers"
+            "link": "/collections/cleansers",
+            "full_width": false
           }
         },
         "cat2": {
@@ -60,7 +102,8 @@
           "settings": {
             "name": "Moisturisers",
             "subtitle": "Lock it in",
-            "link": "/collections/moisturisers"
+            "link": "/collections/moisturisers",
+            "full_width": false
           }
         },
         "cat3": {
@@ -82,51 +125,162 @@
           }
         }
       },
-      "block_order": ["cat1", "cat2", "cat3", "cat4"]
+      "block_order": [
+        "cat1",
+        "cat2",
+        "cat3",
+        "cat4"
+      ],
+      "settings": {
+        "title": "Shop by <em>category</em>"
+      }
     },
     "gallery": {
       "type": "editorial-gallery",
+      "blocks": {
+        "i1": {
+          "type": "image",
+          "settings": {}
+        },
+        "i2": {
+          "type": "image",
+          "settings": {}
+        },
+        "i3": {
+          "type": "image",
+          "settings": {}
+        },
+        "i4": {
+          "type": "image",
+          "settings": {}
+        },
+        "i5": {
+          "type": "image",
+          "settings": {}
+        },
+        "i6": {
+          "type": "image",
+          "settings": {}
+        },
+        "i7": {
+          "type": "image",
+          "settings": {}
+        },
+        "i8": {
+          "type": "image",
+          "settings": {}
+        },
+        "i9": {
+          "type": "image",
+          "settings": {}
+        },
+        "o1": {
+          "type": "overlay",
+          "settings": {
+            "text": "CURATED"
+          }
+        },
+        "o2": {
+          "type": "overlay",
+          "settings": {
+            "text": "Glow"
+          }
+        },
+        "o3": {
+          "type": "overlay",
+          "settings": {
+            "text": "DAILY RITUAL"
+          }
+        },
+        "o4": {
+          "type": "overlay",
+          "settings": {
+            "text": "Purity"
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "i8",
+        "i9",
+        "o1",
+        "o2",
+        "o3",
+        "o4"
+      ],
       "settings": {
         "intro": "We bring science to life through",
         "word": "Purity"
-      },
-      "blocks": {
-        "i1": { "type": "image" },
-        "i2": { "type": "image" },
-        "i3": { "type": "image" },
-        "i4": { "type": "image" },
-        "i5": { "type": "image" },
-        "i6": { "type": "image" },
-        "i7": { "type": "image" },
-        "i8": { "type": "image" },
-        "i9": { "type": "image" },
-        "o1": { "type": "overlay", "settings": { "text": "CURATED" } },
-        "o2": { "type": "overlay", "settings": { "text": "Glow" } },
-        "o3": { "type": "overlay", "settings": { "text": "DAILY RITUAL" } },
-        "o4": { "type": "overlay", "settings": { "text": "Purity" } }
-      },
-      "block_order": ["i1","i2","i3","i4","i5","i6","i7","i8","i9","o1","o2","o3","o4"]
+      }
     },
     "featured": {
       "type": "featured-products",
       "settings": {
         "title": "Featured Products",
+        "collection": "",
         "product_limit": 6
       }
     },
     "ritual": {
       "type": "ritual-directory",
+      "blocks": {
+        "r1": {
+          "type": "ritual",
+          "settings": {
+            "name": "Morning Ritual",
+            "descriptor": "Cleanse, treat, protect",
+            "count": 4,
+            "count_label": "steps",
+            "link": "/collections/morning"
+          }
+        },
+        "r2": {
+          "type": "ritual",
+          "settings": {
+            "name": "Evening Reset",
+            "descriptor": "Strip, restore, repair",
+            "count": 5,
+            "count_label": "steps",
+            "link": "/collections/evening"
+          }
+        },
+        "r3": {
+          "type": "ritual",
+          "settings": {
+            "name": "Weekly Treatment",
+            "descriptor": "Exfoliate & mask",
+            "count": 3,
+            "count_label": "steps",
+            "link": "/collections/weekly-treatment"
+          }
+        },
+        "r4": {
+          "type": "ritual",
+          "settings": {
+            "name": "Targeted Repair",
+            "descriptor": "Concern-specific actives",
+            "count": 6,
+            "count_label": "steps",
+            "link": "/collections/targeted"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
       "settings": {
         "title": "The Ritual",
         "intro": "Skincare is a sequence. Choose where to start."
-      },
-      "blocks": {
-        "r1": { "type": "ritual", "settings": { "name": "Morning Ritual",   "descriptor": "Cleanse, treat, protect",       "count": 4, "link": "/collections/morning" } },
-        "r2": { "type": "ritual", "settings": { "name": "Evening Reset",    "descriptor": "Strip, restore, repair",         "count": 5, "link": "/collections/evening" } },
-        "r3": { "type": "ritual", "settings": { "name": "Weekly Treatment", "descriptor": "Exfoliate & mask",               "count": 3, "link": "/collections/weekly-treatment" } },
-        "r4": { "type": "ritual", "settings": { "name": "Targeted Repair",  "descriptor": "Concern-specific actives",       "count": 6, "link": "/collections/targeted" } }
-      },
-      "block_order": ["r1","r2","r3","r4"]
+      }
     }
   },
   "order": [
