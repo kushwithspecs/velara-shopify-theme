@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="robots" content="max-image-preview:large">
+
+    {%- if settings.social_share_image -%}
+      <link rel="preload" as="image" href="{{ settings.social_share_image | image_url: width: 1200 }}">
+    {%- endif -%}
+
+    {%- if page_title -%}
+      <title>{{ page_title }}{% if current_tags %} – {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} · {{ shop.name }}{% endunless %}</title>
+    {%- else -%}
+      <title>{{ shop.name }}</title>
+    {%- endif -%}
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- comment -%} Open Graph {%- endcomment -%}
+    <meta property="og:site_name" content="{{ shop.name }}">
+    <meta property="og:title" content="{{ page_title | default: shop.name }}">
+    <meta property="og:type" content="{% if request.page_type == 'product' %}product{% else %}website{% endif %}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    {%- if page_description -%}
+      <meta property="og:description" content="{{ page_description | escape }}">
+    {%- endif -%}
+    {%- if settings.social_share_image -%}
+      <meta property="og:image" content="https:{{ settings.social_share_image | image_url: width: 1200 }}">
+    {%- endif -%}
+
+    {%- comment -%} Twitter {%- endcomment -%}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title | default: shop.name }}">
+    {%- if settings.social_share_image -%}
+      <meta name="twitter:image" content="https:{{ settings.social_share_image | image_url: width: 1200 }}">
+    {%- endif -%}
+
+    {%- comment -%} Favicon {%- endcomment -%}
+    {%- if settings.logo -%}
+      <link rel="icon" type="image/png" href="{{ settings.logo | image_url: width: 32 }}">
+    {%- endif -%}
+
+    {%- comment -%} Preconnect to font CDNs {%- endcomment -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+
+    {%- comment -%} CSS — order matters {%- endcomment -%}
+    {{ 'velara-base.css' | asset_url | stylesheet_tag }}
+    {{ 'velara-fonts.css' | asset_url | stylesheet_tag }}
+    {{ 'velara-animations.css' | asset_url | stylesheet_tag }}
+    {{ 'velara-layout.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ request.page_type | handle }}">
+    <a class="visually-hidden" href="#main">Skip to content</a>
+
+    {% section 'header' %}
+
+    <main id="main" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {%- comment -%} Deferred scripts at end of body {%- endcomment -%}
+    <script src="{{ 'nav.js' | asset_url }}" defer></script>
+    <script src="{{ 'ticker.js' | asset_url }}" defer></script>
+    <script src="{{ 'parallax.js' | asset_url }}" defer></script>
+    <script src="{{ 'card-3d.js' | asset_url }}" defer></script>
+    <script src="{{ 'hero-canvas.js' | asset_url }}" defer></script>
+    <script src="{{ 'gallery-counter.js' | asset_url }}" defer></script>
+    <script src="{{ 'reveal.js' | asset_url }}" defer></script>
+    <script src="{{ 'cart-ajax.js' | asset_url }}" defer></script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<style>
+  .accordion {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .accordion__item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .accordion__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--space-3);
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .accordion__summary::-webkit-details-marker { display: none; }
+
+  .accordion__icon {
+    width: 14px;
+    height: 14px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .accordion__icon::before,
+  .accordion__icon::after {
+    content: '';
+    position: absolute;
+    background-color: var(--color-black);
+    transition: transform var(--transition-base);
+  }
+
+  .accordion__icon::before {
+    top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%);
+  }
+
+  .accordion__icon::after {
+    top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-50%);
+  }
+
+  .accordion__item[open] .accordion__icon::after {
+    transform: translateX(-50%) rotate(90deg);
+    opacity: 0;
+  }
+
+  .accordion__body {
+    padding-block: 0 var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-accent-warm);
+    max-width: 72ch;
+  }
+
+  .accordion__body p { margin-block: var(--space-1); }
+</style>
+
+<section class="container" style="padding-block: var(--space-6);">
+  <div class="accordion">
+    <details class="accordion__item">
+      <summary class="accordion__summary">
+        {{ 'product.about' | t }}
+        <span class="accordion__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="accordion__body">
+        {{ product.description }}
+      </div>
+    </details>
+
+    {%- if product.metafields.custom.key_ingredients != blank -%}
+      <details class="accordion__item">
+        <summary class="accordion__summary">
+          {{ 'product.ingredients' | t }}
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="accordion__body">
+          {{ product.metafields.custom.key_ingredients }}
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- if product.metafields.custom.how_to_use != blank -%}
+      <details class="accordion__item">
+        <summary class="accordion__summary">
+          {{ 'product.how_to_use' | t }}
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="accordion__body">
+          {{ product.metafields.custom.how_to_use }}
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- if product.metafields.custom.inci != blank -%}
+      <details class="accordion__item">
+        <summary class="accordion__summary">
+          {{ 'product.inci' | t }}
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </summary>
+        <div class="accordion__body">
+          <p>{{ product.metafields.custom.inci }}</p>
+        </div>
+      </details>
+    {%- endif -%}
+
+    <details class="accordion__item">
+      <summary class="accordion__summary">
+        {{ 'product.shipping' | t }}
+        <span class="accordion__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="accordion__body">
+        <p>Free shipping over ₹1,500. Easy 7-day returns on unopened products. Items ship within 24–48 hours of order placement.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Accordion",
+  "settings": []
+}
+{% endschema %}

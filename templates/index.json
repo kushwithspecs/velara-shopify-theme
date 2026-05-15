@@ -1,0 +1,141 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "headline": "VELARA",
+        "tag_1": "Skincare",
+        "tag_2": "Premium",
+        "accent": "Essence"
+      }
+    },
+    "ticker": {
+      "type": "ticker",
+      "blocks": {
+        "t1": { "type": "item", "settings": { "text": "NEW ARRIVALS" } },
+        "t2": { "type": "item", "settings": { "text": "20% OFF" } },
+        "t3": { "type": "item", "settings": { "text": "FREE SHIPPING" } },
+        "t4": { "type": "item", "settings": { "text": "·" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "brand_intro": {
+      "type": "brand-intro",
+      "settings": {
+        "line_1": "VELARA IS A MODERN SKINCARE ATELIER",
+        "line_2": "best formulas for",
+        "line_3": "and skin that glows."
+      },
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "name": "VELVET GLOW",
+            "descriptor": "fresh, radiant, uplifting"
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "name": "EARTH BALM",
+            "descriptor": "warm, grounding, restorative"
+          }
+        }
+      },
+      "block_order": ["c1", "c2"]
+    },
+    "categories": {
+      "type": "category-grid",
+      "blocks": {
+        "cat1": {
+          "type": "category",
+          "settings": {
+            "name": "Cleansers",
+            "subtitle": "Start fresh",
+            "link": "/collections/cleansers"
+          }
+        },
+        "cat2": {
+          "type": "category",
+          "settings": {
+            "name": "Moisturisers",
+            "subtitle": "Lock it in",
+            "link": "/collections/moisturisers"
+          }
+        },
+        "cat3": {
+          "type": "category",
+          "settings": {
+            "name": "Serums",
+            "subtitle": "Target & treat",
+            "link": "/collections/serums",
+            "full_width": true
+          }
+        },
+        "cat4": {
+          "type": "category",
+          "settings": {
+            "name": "SPF & Protection",
+            "subtitle": "Shield daily",
+            "link": "/collections/spf-protection",
+            "full_width": true
+          }
+        }
+      },
+      "block_order": ["cat1", "cat2", "cat3", "cat4"]
+    },
+    "gallery": {
+      "type": "editorial-gallery",
+      "settings": {
+        "intro": "We bring science to life through",
+        "word": "Purity"
+      },
+      "blocks": {
+        "i1": { "type": "image" },
+        "i2": { "type": "image" },
+        "i3": { "type": "image" },
+        "i4": { "type": "image" },
+        "i5": { "type": "image" },
+        "i6": { "type": "image" },
+        "i7": { "type": "image" },
+        "i8": { "type": "image" },
+        "i9": { "type": "image" },
+        "o1": { "type": "overlay", "settings": { "text": "CURATED" } },
+        "o2": { "type": "overlay", "settings": { "text": "Glow" } },
+        "o3": { "type": "overlay", "settings": { "text": "DAILY RITUAL" } },
+        "o4": { "type": "overlay", "settings": { "text": "Purity" } }
+      },
+      "block_order": ["i1","i2","i3","i4","i5","i6","i7","i8","i9","o1","o2","o3","o4"]
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Featured Products",
+        "product_limit": 6
+      }
+    },
+    "ritual": {
+      "type": "ritual-directory",
+      "settings": {
+        "title": "The Ritual",
+        "intro": "Skincare is a sequence. Choose where to start."
+      },
+      "blocks": {
+        "r1": { "type": "ritual", "settings": { "name": "Morning Ritual",   "descriptor": "Cleanse, treat, protect",       "count": 4, "link": "/collections/morning" } },
+        "r2": { "type": "ritual", "settings": { "name": "Evening Reset",    "descriptor": "Strip, restore, repair",         "count": 5, "link": "/collections/evening" } },
+        "r3": { "type": "ritual", "settings": { "name": "Weekly Treatment", "descriptor": "Exfoliate & mask",               "count": 3, "link": "/collections/weekly-treatment" } },
+        "r4": { "type": "ritual", "settings": { "name": "Targeted Repair",  "descriptor": "Concern-specific actives",       "count": 6, "link": "/collections/targeted" } }
+      },
+      "block_order": ["r1","r2","r3","r4"]
+    }
+  },
+  "order": [
+    "hero",
+    "ticker",
+    "brand_intro",
+    "categories",
+    "gallery",
+    "featured",
+    "ritual"
+  ]
+}

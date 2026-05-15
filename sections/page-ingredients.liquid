@@ -1,0 +1,111 @@
+<style>
+  .ingredients-hero {
+    padding-block: var(--space-10) var(--space-6);
+    text-align: center;
+  }
+
+  .ingredients-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-2);
+  }
+
+  .ingredients-hero p {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: var(--color-accent-warm);
+    max-width: 60ch;
+    margin: 0 auto;
+  }
+
+  .ingredients-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+  @media (max-width: 1199.98px) { .ingredients-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 809.98px) { .ingredients-grid { grid-template-columns: 1fr; } }
+
+  .ingredient-card {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-white);
+    transition: border-color var(--transition-base);
+  }
+
+  .ingredient-card:hover { border-color: var(--color-black); }
+
+  .ingredient-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    margin-bottom: var(--space-1);
+  }
+
+  .ingredient-card__benefit {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--color-accent-green);
+    margin-bottom: var(--space-2);
+  }
+
+  .ingredient-card__body {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-accent-warm);
+    line-height: 1.6;
+  }
+</style>
+
+<section class="ingredients-hero container">
+  <h1>{{ section.settings.title | default: 'Our Key Ingredients' }}</h1>
+  <p>{{ section.settings.subtitle | default: 'Science-backed, dermatologist-tested, transparently sourced.' }}</p>
+</section>
+
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="ingredients-grid">
+      {%- for block in section.blocks -%}
+        <article class="ingredient-card" {{ block.shopify_attributes }}>
+          <h3 class="ingredient-card__name">{{ block.settings.name }}</h3>
+          <p class="ingredient-card__benefit">{{ block.settings.benefit }}</p>
+          <p class="ingredient-card__body">{{ block.settings.body }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredients",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Our Key Ingredients" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Science-backed, dermatologist-tested, transparently sourced." }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Niacinamide" },
+        { "type": "text", "id": "benefit", "label": "Headline benefit", "default": "Pore refining, oil balancing" },
+        { "type": "textarea", "id": "body", "label": "Description", "default": "A form of vitamin B3 that strengthens the skin barrier, evens tone and reduces visible pores." }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Ingredients",
+      "blocks": [
+        { "type": "ingredient", "settings": { "name": "Niacinamide", "benefit": "Pore refining", "body": "Strengthens the skin barrier, evens tone, reduces visible pores." } },
+        { "type": "ingredient", "settings": { "name": "Hyaluronic Acid", "benefit": "Deep hydration", "body": "Holds 1000× its weight in water for plump, dewy skin." } },
+        { "type": "ingredient", "settings": { "name": "Vitamin C", "benefit": "Brightening", "body": "Antioxidant that fades dark spots and boosts collagen." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

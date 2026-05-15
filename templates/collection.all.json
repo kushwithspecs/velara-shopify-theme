@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "shop_hero": {
+      "type": "shop-all-hero",
+      "settings": {
+        "eyebrow": "everything in one place",
+        "title": "<p>Shop <em>everything</em></p>",
+        "subtitle": "Every formula, every drop, every ritual. Filter by category, skin concern, or sale — whatever your skin's craving."
+      },
+      "blocks": {
+        "p1": { "type": "pill", "settings": { "label": "Cleansers", "fallback_url": "/collections/cleansers" } },
+        "p2": { "type": "pill", "settings": { "label": "Moisturisers", "fallback_url": "/collections/moisturisers" } },
+        "p3": { "type": "pill", "settings": { "label": "Serums", "fallback_url": "/collections/serums" } },
+        "p4": { "type": "pill", "settings": { "label": "SPF & Protection", "fallback_url": "/collections/spf-protection" } }
+      },
+      "block_order": ["p1","p2","p3","p4"]
+    },
+    "grid": {
+      "type": "collection-grid"
+    }
+  },
+  "order": ["shop_hero", "grid"]
+}

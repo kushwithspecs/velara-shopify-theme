@@ -1,0 +1,372 @@
+<style>
+  .pdp {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+  }
+
+  @media (min-width: 1200px) {
+    .pdp {
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-10);
+    }
+  }
+
+  /* Gallery */
+  .pdp-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .pdp-gallery__main {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: var(--color-border);
+    border-radius: 4px;
+  }
+
+  .pdp-gallery__main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pdp-gallery__thumbs {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-1);
+  }
+
+  .pdp-gallery__thumb {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+  }
+
+  .pdp-gallery__thumb.is-active {
+    border-color: var(--color-black);
+  }
+
+  .pdp-gallery__thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* Info column */
+  .pdp-info { display: flex; flex-direction: column; gap: var(--space-3); }
+
+  .pdp-info__category {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-accent-warm);
+  }
+
+  .pdp-info__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-black);
+  }
+
+  .pdp-info__tagline {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--color-accent-warm);
+    font-size: var(--text-base);
+  }
+
+  .pdp-info__price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+  }
+
+  .pdp-info__price-current {
+    font-size: var(--text-xl);
+    font-weight: 500;
+  }
+
+  .pdp-info__price-compare {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+  }
+
+  .pdp-info__concerns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .pdp-info__concerns-label {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .pdp-info__concern {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    padding: 4px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-black);
+  }
+
+  /* Variant selector */
+  .pdp-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .pdp-variants__label {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-accent-warm);
+  }
+
+  .pdp-variants__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pdp-variants__option {
+    padding: 8px 14px;
+    border: 1px solid var(--color-border);
+    background: none;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .pdp-variants__option.is-active {
+    border-color: var(--color-black);
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+
+  /* Quantity + CTAs */
+  .pdp-cta-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  .pdp-quantity {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    width: max-content;
+  }
+
+  .pdp-quantity__btn {
+    width: 44px;
+    height: 44px;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-black);
+  }
+
+  .pdp-quantity__input {
+    width: 56px;
+    height: 44px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .pdp-quantity__input::-webkit-outer-spin-button,
+  .pdp-quantity__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .pdp-form__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+</style>
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign product_category = product.type | default: product.collections.first.title %}
+
+<section class="container">
+  <div class="pdp">
+    <div class="pdp-gallery">
+      <div class="pdp-gallery__main" data-pdp-main-image>
+        {%- if current_variant.featured_image -%}
+          {{ current_variant.featured_image | image_url: width: 1400 | image_tag:
+             loading: 'eager',
+             width: current_variant.featured_image.width,
+             height: current_variant.featured_image.height,
+             alt: product.title,
+             sizes: '(min-width: 1200px) 55vw, 100vw' }}
+        {%- elsif product.featured_image -%}
+          {{ product.featured_image | image_url: width: 1400 | image_tag:
+             loading: 'eager',
+             width: product.featured_image.width,
+             height: product.featured_image.height,
+             alt: product.title,
+             sizes: '(min-width: 1200px) 55vw, 100vw' }}
+        {%- endif -%}
+        {%- render 'discount-badge', product: product -%}
+      </div>
+
+      {%- if product.images.size > 1 -%}
+        <div class="pdp-gallery__thumbs">
+          {%- for image in product.images limit: 5 -%}
+            <button type="button"
+                    class="pdp-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                    data-pdp-thumb
+                    data-image-url="{{ image | image_url: width: 1400 }}"
+                    aria-label="View image {{ forloop.index }}">
+              {{ image | image_url: width: 240 | image_tag:
+                 loading: 'lazy',
+                 width: 120, height: 120,
+                 alt: image.alt | default: product.title }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp-info">
+      {%- if product_category != blank -%}
+        <span class="pdp-info__category">{{ product_category }}</span>
+      {%- endif -%}
+
+      <h1 class="pdp-info__title">{{ product.title }}</h1>
+
+      {%- if product.metafields.custom.tagline -%}
+        <p class="pdp-info__tagline">{{ product.metafields.custom.tagline }}</p>
+      {%- endif -%}
+
+      <div class="pdp-info__price">
+        <span class="pdp-info__price-current">{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <s class="pdp-info__price-compare">{{ current_variant.compare_at_price | money }}</s>
+        {%- endif -%}
+      </div>
+
+      {%- assign concerns = product.metafields.custom.skin_concern.value -%}
+      {%- if concerns != blank -%}
+        <div class="pdp-info__concerns">
+          <span class="pdp-info__concerns-label">{{ 'product.for_concern' | t }}:</span>
+          {%- for concern in concerns -%}
+            <span class="pdp-info__concern">{{ concern }}</span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <form action="{{ routes.cart_add_url }}"
+            method="post"
+            enctype="multipart/form-data"
+            class="pdp-form"
+            data-pdp-form>
+        {%- if product.has_only_default_variant == false -%}
+          {%- for option in product.options_with_values -%}
+            <div class="pdp-variants">
+              <span class="pdp-variants__label">{{ option.name }}</span>
+              <div class="pdp-variants__options">
+                {%- for value in option.values -%}
+                  <button type="button"
+                          class="pdp-variants__option{% if value == option.selected_value %} is-active{% endif %}"
+                          data-variant-option
+                          data-option-index="{{ forloop.index0 }}"
+                          data-value="{{ value | escape }}">
+                    {{ value }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+        <div class="pdp-cta-row">
+          <div class="pdp-quantity" role="group" aria-label="{{ 'product.quantity' | t }}">
+            <button type="button" class="pdp-quantity__btn" data-qty-decrease aria-label="{{ 'product.decrease' | t }}">−</button>
+            <input type="number" name="quantity" value="1" min="1" class="pdp-quantity__input" data-qty-input>
+            <button type="button" class="pdp-quantity__btn" data-qty-increase aria-label="{{ 'product.increase' | t }}">+</button>
+          </div>
+
+          <div class="pdp-form__buttons">
+            <button type="submit"
+                    name="add"
+                    class="btn btn--primary btn--full"
+                    {% unless current_variant.available %}disabled{% endunless %}>
+              {%- if current_variant.available -%}
+                {{ 'product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'product.sold_out' | t }}
+              {%- endif -%}
+            </button>
+            <button type="submit"
+                    name="add"
+                    formaction="{{ routes.cart_url }}/add"
+                    class="btn btn--secondary btn--full"
+                    data-buy-now
+                    {% unless current_variant.available %}disabled{% endunless %}>
+              {{ 'product.buy_now' | t }}
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {%- comment -%} JSON-LD for SEO {%- endcomment -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": {{ product.title | json }},
+          "image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},
+          "description": {{ product.description | strip_html | json }},
+          "sku": {{ current_variant.sku | json }},
+          "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
+          "offers": {
+            "@type": "Offer",
+            "url": "{{ shop.url }}{{ product.url }}",
+            "priceCurrency": {{ cart.currency.iso_code | json }},
+            "price": {{ current_variant.price | divided_by: 100.0 }},
+            "availability": "https://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}"
+          }
+        }
+      </script>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Main",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,10 @@
+{%- comment -%}
+  Quirky pink sale sticker. Renders only when product is on sale.
+  Accepts:
+    - product: a product object
+{%- endcomment -%}
+
+{%- if product.compare_at_price > product.price -%}
+  {%- assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+  <span class="sticker sticker--sale" aria-label="{{ discount }}% off">{{ discount }}% off</span>
+{%- endif -%}

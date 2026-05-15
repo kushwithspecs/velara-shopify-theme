@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "categories": {
+      "type": "category-grid"
+    }
+  },
+  "order": ["categories"]
+}

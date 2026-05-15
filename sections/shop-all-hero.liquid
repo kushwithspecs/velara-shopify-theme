@@ -1,0 +1,162 @@
+<style>
+  .shop-hero {
+    background-color: var(--color-pink-soft);
+    padding-block: var(--space-10) var(--space-6);
+    position: relative;
+    overflow: hidden;
+  }
+  .shop-hero::before {
+    content: "";
+    position: absolute;
+    width: 280px; height: 280px;
+    background: var(--color-yellow);
+    border-radius: 50%;
+    top: -100px; right: 8%;
+    opacity: 0.35;
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .shop-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px; height: 220px;
+    background: var(--color-mint);
+    border-radius: 50%;
+    bottom: -90px; left: 10%;
+    opacity: 0.4;
+    filter: blur(30px);
+    pointer-events: none;
+  }
+
+  .shop-hero__inner { position: relative; z-index: 1; }
+
+  .shop-hero__eyebrow {
+    font-family: var(--font-script);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    color: var(--color-terracotta);
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin-bottom: var(--space-1);
+  }
+  .shop-hero__eyebrow::before { content: "✿ "; }
+
+  .shop-hero__title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    color: var(--color-black);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 18ch;
+  }
+  .shop-hero__title em { font-style: italic; color: var(--color-terracotta); }
+
+  .shop-hero__sub {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: var(--color-black);
+    opacity: 0.75;
+    max-width: 56ch;
+    margin-top: var(--space-3);
+  }
+
+  .shop-hero__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: var(--space-5);
+  }
+  .shop-hero__pill {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    background: var(--color-white);
+    color: var(--color-black);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform var(--transition-base), background-color var(--transition-base);
+  }
+  .shop-hero__pill:hover { transform: translateY(-2px); }
+  .shop-hero__pill--pink     { background: var(--color-pink); }
+  .shop-hero__pill--yellow   { background: var(--color-yellow); }
+  .shop-hero__pill--mint     { background: var(--color-mint); }
+  .shop-hero__pill--lavender { background: var(--color-lavender); }
+  .shop-hero__pill__count {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-weight: 700;
+    opacity: 0.65;
+  }
+</style>
+
+<section class="shop-hero">
+  <div class="container shop-hero__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="shop-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+
+    <h1 class="shop-hero__title">{{ section.settings.title | default: 'Shop <em>everything</em>' }}</h1>
+
+    {%- if section.settings.subtitle != blank -%}
+      <p class="shop-hero__sub">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="shop-hero__pills">
+        {%- assign palette = "pink,yellow,mint,lavender" | split: "," -%}
+        {%- for block in section.blocks -%}
+          {%- assign colour_index = forloop.index0 | modulo: 4 -%}
+          {%- assign colour = palette[colour_index] -%}
+          {%- assign linked_collection = collections[block.settings.collection] -%}
+          <a href="{{ linked_collection.url | default: block.settings.fallback_url | default: '#' }}"
+             class="shop-hero__pill shop-hero__pill--{{ colour }}"
+             {{ block.shopify_attributes }}>
+            {{ block.settings.label | default: linked_collection.title }}
+            {%- if linked_collection.products_count > 0 -%}
+              <span class="shop-hero__pill__count">({{ linked_collection.products_count }})</span>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop All Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (handwritten)", "default": "everything in one place" },
+    { "type": "richtext", "id": "title", "label": "Title (HTML allowed)", "default": "<p>Shop <em>everything</em></p>" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Every formula, every drop, every ritual. Filter by category, skin concern, or sale — whatever your skin's craving." }
+  ],
+  "blocks": [
+    {
+      "type": "pill",
+      "name": "Quick-jump pill",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label (overrides collection title)" },
+        { "type": "collection", "id": "collection", "label": "Linked collection" },
+        { "type": "url", "id": "fallback_url", "label": "Fallback URL (if no collection)" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Shop All Hero",
+      "blocks": [
+        { "type": "pill", "settings": { "label": "Cleansers" } },
+        { "type": "pill", "settings": { "label": "Moisturisers" } },
+        { "type": "pill", "settings": { "label": "Serums" } },
+        { "type": "pill", "settings": { "label": "SPF" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

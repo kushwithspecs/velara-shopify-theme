@@ -1,0 +1,107 @@
+<style>
+  .ticker {
+    width: 100%;
+    overflow: hidden;
+    padding-block: var(--space-3);
+    background-color: var(--color-mint);
+    border-block: 2px solid var(--color-black);
+  }
+
+  .ticker__track {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+    will-change: transform;
+  }
+
+  .ticker:hover .ticker__track { animation-play-state: paused; }
+
+  .ticker__group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-inline: var(--space-3);
+  }
+
+  .ticker__item {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    color: var(--color-black);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ticker__item::after {
+    content: "✿";
+    color: var(--color-terracotta);
+    font-size: 1.2em;
+  }
+</style>
+
+{%- liquid
+  assign items = section.blocks
+-%}
+
+<section class="ticker" aria-label="Promotions">
+  <ul class="ticker__track" role="group">
+    {%- comment -%} render the group twice so the marquee loop appears seamless {%- endcomment -%}
+    {%- for pass in (1..2) -%}
+      <li class="ticker__group" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}">
+        {%- if items.size > 0 -%}
+          {%- for block in items -%}
+            <span class="ticker__item"
+                  aria-posinset="{{ forloop.index }}"
+                  aria-setsize="{{ items.size }}"
+                  {% if forloop.first %}aria-hidden="false"{% else %}aria-hidden="true"{% endif %}
+                  {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </span>
+          {%- endfor -%}
+        {%- else -%}
+          <span class="ticker__item" aria-posinset="1" aria-setsize="4">{{ 'ticker.item_1' | t }}</span>
+          <span class="ticker__item" aria-posinset="2" aria-setsize="4">{{ 'ticker.item_2' | t }}</span>
+          <span class="ticker__item" aria-posinset="3" aria-setsize="4">{{ 'ticker.item_3' | t }}</span>
+          <span class="ticker__item" aria-posinset="4" aria-setsize="4">{{ 'ticker.item_4' | t }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Ticker",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ticker item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "NEW ARRIVALS"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Ticker",
+      "blocks": [
+        { "type": "item", "settings": { "text": "NEW ARRIVALS" } },
+        { "type": "item", "settings": { "text": "20% OFF" } },
+        { "type": "item", "settings": { "text": "FREE SHIPPING" } },
+        { "type": "item", "settings": { "text": "·" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

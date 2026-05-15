@@ -1,0 +1,99 @@
+<style>
+  .featured { background-color: var(--color-yellow-soft); position: relative; }
+
+  .featured__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: var(--space-5);
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .featured__title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+  }
+  .featured__title em { color: var(--color-terracotta); font-style: italic; }
+
+  .featured__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-black);
+    padding: 10px 18px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    background-color: var(--color-white);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap var(--transition-base), background-color var(--transition-base);
+  }
+  .featured__cta::after { content: "→"; }
+  .featured__cta:hover { gap: 10px; background-color: var(--color-pink-soft); }
+
+  .featured__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  @media (max-width: 1199.98px) { .featured__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 809.98px)  { .featured__grid { grid-template-columns: 1fr; } }
+</style>
+
+<section class="section featured">
+  <div class="container">
+    <div class="featured__header reveal">
+      <h2 class="featured__title">{{ section.settings.title | default: 'featured.title' | t }}</h2>
+      <a href="{{ routes.all_products_collection_url }}" class="featured__cta">
+        {{ 'navigation.shop_all' | t }}
+      </a>
+    </div>
+
+    <div class="featured__grid">
+      {%- if section.settings.collection != blank -%}
+        {%- assign featured_collection = collections[section.settings.collection] -%}
+        {%- for product in featured_collection.products limit: section.settings.product_limit -%}
+          {%- render 'product-card', product: product -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.product != blank -%}
+            {%- render 'product-card', product: block.settings.product -%}
+          {%- else -%}
+            {%- render 'product-card', product: blank -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Featured Products" },
+    { "type": "collection", "id": "collection", "label": "Source collection" },
+    { "type": "range", "id": "product_limit", "label": "Number of products", "min": 3, "max": 12, "step": 1, "default": 6 }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Manual product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,260 @@
+<style>
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--color-cream);
+    isolation: isolate;
+  }
+
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .hero.is-video-ready .hero__video { opacity: 1; }
+
+  .hero__gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-color: var(--color-cream);
+    transition: opacity 1.4s ease;
+  }
+  .hero.is-video-ready .hero__gradient {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hero__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.65;
+    pointer-events: none;
+  }
+  .hero__blob--1 { width: 50vw; height: 50vw; left: -10vw; top: -10vw;  background: var(--color-pink);     animation: heroFloatA 14s ease-in-out infinite; }
+  .hero__blob--2 { width: 45vw; height: 45vw; right: -8vw; top: 10vw;  background: var(--color-yellow);   animation: heroFloatB 18s ease-in-out infinite; }
+  .hero__blob--3 { width: 40vw; height: 40vw; left: 25vw; bottom: -15vw; background: var(--color-lavender); animation: heroFloatA 22s ease-in-out infinite reverse; }
+  .hero__blob--4 { width: 30vw; height: 30vw; right: 20vw; bottom: 0;   background: var(--color-mint);     animation: heroFloatB 26s ease-in-out infinite; }
+  @keyframes heroFloatA { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-30px) scale(1.1); } }
+  @keyframes heroFloatB { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-30px,40px) scale(0.92); } }
+
+  .hero__loader {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(160px, 20vw, 240px);
+    height: 3px;
+    background: rgba(0,0,0,0.12);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    z-index: 3;
+    transition: opacity 0.6s ease;
+  }
+  .hero__loader-bar {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: var(--color-black);
+    border-radius: var(--radius-pill);
+    animation: heroLoaderFill var(--loader-duration, 2.2s) ease forwards;
+  }
+  .hero.is-video-ready .hero__loader { opacity: 0; }
+  @keyframes heroLoaderFill {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  .hero__inner {
+    position: relative; z-index: 4;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding-block: var(--space-6);
+  }
+
+  .hero__top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); }
+
+  .hero__tags {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    animation: fadeSlideLeft 0.8s var(--transition-cinematic) backwards;
+    animation-delay: 100ms;
+  }
+
+  .hero__tag {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-black);
+    padding: 8px 16px;
+    background: var(--color-white);
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    transition: color 1s ease, background-color 1s ease, border-color 1s ease;
+  }
+  .hero__tag--pink   { background: var(--color-pink-soft); }
+  .hero__tag--yellow { background: var(--color-yellow-soft); }
+
+  .hero__accent {
+    font-family: var(--font-script);
+    font-weight: 600;
+    font-size: 2.25rem;
+    color: var(--color-terracotta);
+    align-self: flex-end;
+    transform: rotate(-6deg);
+    animation: fadeIn 1s ease backwards;
+    animation-delay: 400ms;
+    transition: color 1s ease;
+  }
+  .hero__accent::before { content: "✿ "; }
+
+  .hero__headline {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--color-black);
+    text-align: center;
+    margin: 0;
+    font-size: clamp(5rem, 16vw, 14rem);
+    animation: fadeSlideUp 0.9s var(--transition-cinematic) backwards;
+    animation-delay: 200ms;
+    transition: color 1s ease;
+  }
+  .hero__headline em { font-style: italic; color: var(--color-terracotta); transition: color 1s ease; }
+
+  .hero__sub {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: var(--color-black);
+    text-align: center;
+    max-width: 36ch;
+    margin: var(--space-2) auto 0;
+    opacity: 0.75;
+    animation: fadeIn 1.2s ease backwards;
+    animation-delay: 600ms;
+    transition: color 1s ease;
+  }
+
+  .hero.is-video-ready .hero__headline,
+  .hero.is-video-ready .hero__headline em,
+  .hero.is-video-ready .hero__sub,
+  .hero.is-video-ready .hero__accent {
+    color: var(--color-white);
+  }
+
+  .hero.is-video-ready .hero__tag {
+    background: rgba(255,255,255,0.18);
+    color: var(--color-white);
+    border-color: rgba(255,255,255,0.55);
+    backdrop-filter: blur(6px);
+  }
+
+  .hero__bottom { display: flex; flex-direction: column; gap: var(--space-2); align-items: center; }
+
+  @media (max-width: 809.98px) {
+    .hero__accent { display: none; }
+  }
+</style>
+
+<section class="hero" data-hero style="--loader-duration: 2.2s;">
+  <video class="hero__video" data-hero-video
+         src="{{ 'hero_video.mp4' | asset_url }}"
+         autoplay muted loop playsinline preload="auto"
+         aria-hidden="true"></video>
+
+  <div class="hero__gradient" data-hero-gradient aria-hidden="true">
+    <div class="hero__blob hero__blob--1"></div>
+    <div class="hero__blob hero__blob--2"></div>
+    <div class="hero__blob hero__blob--3"></div>
+    <div class="hero__blob hero__blob--4"></div>
+  </div>
+
+  <div class="hero__loader" data-hero-loader aria-hidden="true">
+    <div class="hero__loader-bar"></div>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__top">
+      <div class="hero__tags">
+        <span class="hero__tag hero__tag--pink">{{ section.settings.tag_1 | default: 'Skincare' }}</span>
+        <span class="hero__tag hero__tag--yellow">{{ section.settings.tag_2 | default: 'Science-backed' }}</span>
+        {%- if section.settings.tag_3 != blank -%}
+          <span class="hero__tag">{{ section.settings.tag_3 }}</span>
+        {%- endif -%}
+      </div>
+      <span class="hero__accent">{{ section.settings.accent | default: 'a daily ritual' }}</span>
+    </div>
+
+    {%- assign headline_text = section.settings.headline | default: 'velara' -%}
+    <h1 class="hero__headline">{{ headline_text }}</h1>
+
+    <div class="hero__bottom">
+      {%- if section.settings.sub != blank -%}
+        <p class="hero__sub">{{ section.settings.sub }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var hero = document.querySelector('[data-hero]');
+    if (!hero) return;
+    var video = hero.querySelector('[data-hero-video]');
+    if (!video) return;
+
+    var minLoaderMs = 2200;
+    var startedAt = performance.now();
+    var revealed = false;
+
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      var elapsed = performance.now() - startedAt;
+      var wait = Math.max(0, minLoaderMs - elapsed);
+      setTimeout(function () {
+        hero.classList.add('is-video-ready');
+        var p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      }, wait);
+    }
+
+    if (video.readyState >= 3) {
+      reveal();
+    } else {
+      video.addEventListener('canplay', reveal, { once: true });
+      video.addEventListener('loadeddata', reveal, { once: true });
+      setTimeout(reveal, 5000);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    { "type": "text", "id": "headline", "label": "Headline", "default": "velara" },
+    { "type": "text", "id": "tag_1", "label": "Tag 1 (pink)", "default": "Skincare" },
+    { "type": "text", "id": "tag_2", "label": "Tag 2 (yellow)", "default": "Science-backed" },
+    { "type": "text", "id": "tag_3", "label": "Tag 3 (optional)", "default": "Cruelty-free" },
+    { "type": "text", "id": "accent", "label": "Handwritten accent (top right)", "default": "a daily ritual" },
+    { "type": "textarea", "id": "sub", "label": "Sub-headline (under brand name)", "default": "Skincare that's gentle on your skin and loud on personality." }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

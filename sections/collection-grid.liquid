@@ -1,0 +1,264 @@
+<style>
+  .catalogue { background-color: var(--color-cream); padding-block: var(--space-6) var(--space-10); }
+
+  .catalogue__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    margin-bottom: var(--space-4);
+    border-bottom: 1.5px dashed var(--color-black);
+  }
+
+  .catalogue__count {
+    font-family: var(--font-script);
+    font-size: var(--text-xl);
+    color: var(--color-terracotta);
+  }
+
+  .catalogue__sort {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .catalogue__sort-label {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-black);
+    font-weight: 600;
+  }
+  .catalogue__sort select {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: 8px 32px 8px 14px;
+    border: 1.5px solid var(--color-black);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%231C1C20' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    transition: background-color var(--transition-base);
+  }
+  .catalogue__sort select:hover { background-color: var(--color-yellow-soft); }
+
+  /* Filter pills */
+  .catalogue__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: var(--space-4);
+  }
+  .filter-pill {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    background-color: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color var(--transition-base), transform var(--transition-base);
+    text-decoration: none;
+  }
+  .filter-pill:hover { transform: translateY(-1px); background-color: var(--color-pink-soft); }
+  .filter-pill--active {
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+  .filter-pill--active:hover { background-color: var(--color-black); }
+  .filter-pill__count {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    opacity: 0.65;
+    font-weight: 600;
+  }
+  .filter-pill--clear {
+    background: var(--color-pink);
+    border-style: dashed;
+  }
+  .filter-pill--clear::before { content: "✕"; font-weight: 700; }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .filter-group__label {
+    font-family: var(--font-script);
+    font-size: var(--text-base);
+    color: var(--color-terracotta);
+  }
+  .filter-group__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Grid */
+  .catalogue__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  @media (max-width: 1199.98px) { .catalogue__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 809.98px)  { .catalogue__grid { grid-template-columns: 1fr; } }
+
+  /* Empty state */
+  .catalogue__empty {
+    padding: var(--space-12) var(--space-3);
+    text-align: center;
+    border: 2px dashed var(--color-black);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-yellow-soft);
+  }
+  .catalogue__empty-emoji {
+    font-size: 3rem;
+    margin-bottom: var(--space-2);
+  }
+  .catalogue__empty-title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: var(--space-1);
+  }
+  .catalogue__empty-body {
+    font-family: var(--font-body);
+    color: var(--color-black);
+    opacity: 0.75;
+    margin-bottom: var(--space-3);
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding-block: var(--space-8) var(--space-2);
+    flex-wrap: wrap;
+  }
+  .pagination a, .pagination span {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    padding: 8px 14px;
+    border: 1.5px solid var(--color-black);
+    border-radius: var(--radius-pill);
+    color: var(--color-black);
+    background-color: var(--color-white);
+    transition: background-color var(--transition-base);
+  }
+  .pagination a:hover { background-color: var(--color-mint); }
+  .pagination .current { background-color: var(--color-black); color: var(--color-white); }
+</style>
+
+{%- paginate collection.products by 12 -%}
+<section class="catalogue">
+  <div class="container">
+
+    {%- comment -%} Filter pills (Shopify Storefront Filtering API) {%- endcomment -%}
+    {%- if collection.filters.size > 0 -%}
+      <form method="get" id="CatalogueFilters">
+        {%- comment -%} Preserve sort_by when filters change {%- endcomment -%}
+        {%- if collection.sort_by != blank and collection.sort_by != collection.default_sort_by -%}
+          <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+        {%- endif -%}
+
+        <div class="catalogue__filters">
+          {%- for filter in collection.filters -%}
+            {%- case filter.type -%}
+              {%- when 'list', 'boolean' -%}
+                <div class="filter-group">
+                  <span class="filter-group__label">{{ filter.label | downcase }}</span>
+                  <div class="filter-group__pills">
+                    {%- for value in filter.values -%}
+                      {%- if value.count > 0 -%}
+                        <a href="{{ value.url_to_add | default: value.url_to_remove }}"
+                           class="filter-pill{% if value.active %} filter-pill--active{% endif %}">
+                          {{ value.label }}
+                          <span class="filter-pill__count">{{ value.count }}</span>
+                        </a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+
+          {%- if collection.current_vendor or collection.current_type or collection.url contains '?filter' -%}
+            <a href="{{ collection.url }}" class="filter-pill filter-pill--clear">Clear filters</a>
+          {%- endif -%}
+        </div>
+      </form>
+    {%- endif -%}
+
+    {%- comment -%} Toolbar — product count + sort {%- endcomment -%}
+    <div class="catalogue__toolbar">
+      <span class="catalogue__count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</span>
+
+      <form method="get" class="catalogue__sort">
+        <label for="SortBy" class="catalogue__sort-label">Sort:</label>
+        <select id="SortBy" name="sort_by" onchange="this.form.submit()">
+          {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+          <option value="manual"             {% if current_sort == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="price-ascending"    {% if current_sort == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+          <option value="price-descending"   {% if current_sort == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+          <option value="created-descending" {% if current_sort == 'created-descending' %}selected{% endif %}>Newest</option>
+          <option value="best-selling"       {% if current_sort == 'best-selling' %}selected{% endif %}>Best Selling</option>
+        </select>
+      </form>
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="catalogue__grid">
+        {%- for product in collection.products -%}
+          {%- render 'product-card', product: product -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}">← Prev</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span class="{% if part.title == paginate.current_page %}current{% endif %}">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}">Next →</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="catalogue__empty">
+        <div class="catalogue__empty-emoji">✿</div>
+        <h3 class="catalogue__empty-title">Nothing matches that combo</h3>
+        <p class="catalogue__empty-body">Try clearing a filter or two.</p>
+        <a href="{{ collection.url }}" class="filter-pill filter-pill--clear">Clear filters</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Catalogue Grid",
+  "settings": []
+}
+{% endschema %}

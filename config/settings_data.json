@@ -1,0 +1,24 @@
+{
+  "current": {
+    "brand_name": "VELARA",
+    "tagline": "Skin is not a canvas. It's a ritual.",
+    "color_accent_green": "#C3E794",
+    "color_accent_warm": "#483F36",
+    "color_border": "#ECECE4",
+    "font_display": "Clash Display",
+    "font_body": "Inter",
+    "free_shipping_enabled": true,
+    "free_shipping_threshold": 1500
+  },
+  "presets": {
+    "Default": {
+      "brand_name": "VELARA",
+      "tagline": "Skin is not a canvas. It's a ritual.",
+      "color_accent_green": "#C3E794",
+      "color_accent_warm": "#483F36",
+      "color_border": "#ECECE4",
+      "font_display": "Clash Display",
+      "font_body": "Inter"
+    }
+  }
+}

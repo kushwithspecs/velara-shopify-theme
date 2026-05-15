@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-main"
+    },
+    "accordion": {
+      "type": "product-accordion"
+    },
+    "related": {
+      "type": "product-related",
+      "settings": {
+        "title": "You Might Also Like"
+      }
+    }
+  },
+  "order": ["main", "accordion", "related"]
+}

@@ -1,0 +1,139 @@
+/* ============================================================
+   VELARA — Layout & Responsive Utilities
+   Breakpoints (from reference HTML):
+     Desktop: min-width 1200px
+     Tablet:  810px – 1199.98px
+     Mobile:  max-width 809.98px
+   ============================================================ */
+
+/* ── Container ─────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad-mobile);
+}
+
+@media (min-width: 810px) {
+  .container { padding-inline: var(--container-pad-tablet); }
+}
+
+@media (min-width: 1200px) {
+  .container { padding-inline: var(--container-pad-desktop); }
+}
+
+/* ── Full-bleed (escape container) ─────────────── */
+.full-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
+/* ── Grid helpers ──────────────────────────────── */
+.grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1199.98px) {
+  .grid--3,
+  .grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 809.98px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 { grid-template-columns: 1fr; }
+}
+
+/* ── Flex helpers ──────────────────────────────── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+
+/* ── Section spacing ───────────────────────────── */
+.section {
+  padding-block: var(--space-10);
+}
+
+@media (min-width: 810px) {
+  .section { padding-block: var(--space-12); }
+}
+
+@media (min-width: 1200px) {
+  .section { padding-block: var(--space-16); }
+}
+
+/* ── Visibility by breakpoint ──────────────────── */
+.hide-mobile { display: none; }
+@media (min-width: 810px) { .hide-mobile { display: revert; } }
+
+.hide-tablet-up { display: revert; }
+@media (min-width: 810px) { .hide-tablet-up { display: none; } }
+
+.hide-desktop { display: revert; }
+@media (min-width: 1200px) { .hide-desktop { display: none; } }
+
+.show-desktop-only { display: none; }
+@media (min-width: 1200px) { .show-desktop-only { display: revert; } }
+
+/* ── Buttons ───────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-base),
+              color var(--transition-base),
+              border-color var(--transition-base),
+              transform var(--transition-base);
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn--primary {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-accent-warm);
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-black);
+  padding: 8px 0;
+  border-bottom: 1px solid currentColor;
+}
+
+.btn--full {
+  width: 100%;
+}

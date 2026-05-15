@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "hero": { "type": "collection-hero" },
+    "grid": { "type": "collection-grid" }
+  },
+  "order": ["hero", "grid"]
+}

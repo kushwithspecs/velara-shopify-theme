@@ -1,0 +1,4 @@
+root: "."
+ignore:
+  - "node_modules/"
+  - "preview/"

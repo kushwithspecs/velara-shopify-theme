@@ -1,0 +1,115 @@
+{
+  "general": {
+    "brand": "VELARA",
+    "tagline": "Skin is not a canvas. It's a ritual.",
+    "search": "Search",
+    "cart": "Cart",
+    "menu": "Menu",
+    "close": "Close",
+    "loading": "Loading"
+  },
+  "navigation": {
+    "shop_all": "Shop All",
+    "cleansers": "Cleansers",
+    "moisturisers": "Moisturisers",
+    "serums": "Serums",
+    "spf": "SPF",
+    "our_story": "Our Story",
+    "ingredients": "Ingredients"
+  },
+  "hero": {
+    "subtitle_1": "Skincare",
+    "subtitle_2": "Essence",
+    "accent": "Ritual",
+    "headline": "VELARA"
+  },
+  "ticker": {
+    "item_1": "NEW ARRIVALS",
+    "item_2": "20% OFF",
+    "item_3": "FREE SHIPPING",
+    "item_4": "·"
+  },
+  "brand_intro": {
+    "line_1": "VELARA IS A MODERN SKINCARE ATELIER",
+    "line_2": "best formulas for",
+    "line_3": "and skin that glows.",
+    "card_1_name": "VELVET GLOW",
+    "card_1_descriptor": "fresh, radiant, uplifting",
+    "card_2_name": "EARTH BALM",
+    "card_2_descriptor": "warm, grounding, restorative"
+  },
+  "categories": {
+    "title": "Categories",
+    "explore": "Explore",
+    "cleansers_subtitle": "Start fresh",
+    "moisturisers_subtitle": "Lock it in",
+    "serums_subtitle": "Target & treat",
+    "spf_subtitle": "Shield daily"
+  },
+  "gallery": {
+    "intro": "We bring science to life through",
+    "word": "Purity",
+    "overlays": ["CURATED", "Glow", "DAILY RITUAL", "For", "The", "Purity"]
+  },
+  "featured": {
+    "title": "Featured Products"
+  },
+  "ritual": {
+    "title": "The Ritual",
+    "intro": "Skincare is a sequence. Choose where to start.",
+    "steps_suffix": "Steps"
+  },
+  "product": {
+    "add_to_cart": "Add to Cart",
+    "buy_now": "Buy Now",
+    "sold_out": "Sold Out",
+    "quantity": "Quantity",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity",
+    "about": "About This Product",
+    "ingredients": "Key Ingredients",
+    "how_to_use": "How to Use",
+    "inci": "Full Ingredient List",
+    "shipping": "Shipping & Returns",
+    "related_title": "You Might Also Like",
+    "for_concern": "For"
+  },
+  "collection": {
+    "filter": "Filter",
+    "sort": "Sort by",
+    "sort_featured": "Featured",
+    "sort_price_asc": "Price: Low to High",
+    "sort_price_desc": "Price: High to Low",
+    "sort_newest": "Newest",
+    "sort_best_selling": "Best Selling",
+    "empty": "No products match your filters.",
+    "clear_filters": "Clear filters"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "continue_shopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "checkout": "Proceed to Checkout",
+    "remove": "Remove",
+    "free_shipping_progress": "{{ amount }} away from free shipping",
+    "free_shipping_unlocked": "You've unlocked free shipping."
+  },
+  "footer": {
+    "tagline": "A skincare platform dedicated to quality, science, and effortless skin.",
+    "address_label": "Address",
+    "address_value": "21 Linking Road, Bandra West, Mumbai 400050",
+    "enquiry_label": "New enquiries",
+    "enquiry_value": "hello@velara.in",
+    "phone_label": "Call us",
+    "phone_value": "+91 98765 43210",
+    "return_policy": "RETURN POLICY",
+    "terms": "TERMS OF USE",
+    "copyright": "VELARA"
+  },
+  "404": {
+    "title": "Page not found",
+    "body": "The page you were looking for has drifted away.",
+    "cta": "Back to home"
+  }
+}

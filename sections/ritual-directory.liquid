@@ -1,0 +1,162 @@
+<style>
+  .ritual { background-color: var(--color-lavender-soft); }
+
+  .ritual__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: var(--space-5);
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .ritual__title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 700;
+  }
+  .ritual__title em { color: var(--color-terracotta); font-style: italic; }
+
+  .ritual__intro {
+    font-family: var(--font-script);
+    font-size: var(--text-xl);
+    color: var(--color-black);
+    max-width: 36ch;
+  }
+
+  .ritual__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  @media (min-width: 810px) { .ritual__list { grid-template-columns: repeat(2, 1fr); } }
+
+  .ritual-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-black);
+    background-color: var(--color-white);
+    box-shadow: 5px 5px 0 var(--color-black);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  .ritual-row:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--color-black);
+  }
+  .ritual-row:nth-child(4n+1) { background-color: var(--color-pink-soft); }
+  .ritual-row:nth-child(4n+2) { background-color: var(--color-yellow-soft); }
+  .ritual-row:nth-child(4n+3) { background-color: var(--color-mint-soft); }
+  .ritual-row:nth-child(4n+4) { background-color: var(--color-lavender); }
+
+  .ritual-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ritual-row__name {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 100, "SOFT" 100;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    font-weight: 700;
+    color: var(--color-black);
+    line-height: 1;
+  }
+
+  .ritual-row__descriptor {
+    font-family: var(--font-script);
+    font-size: var(--text-base);
+    color: var(--color-black);
+  }
+
+  .ritual-row__count {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-black);
+    background: var(--color-cream);
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .ritual-row__count-label {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>
+
+<section class="section ritual">
+  <div class="container">
+    <div class="ritual__header reveal">
+      <div>
+        <h2 class="ritual__title">{{ section.settings.title | default: 'The Ritual' }}</h2>
+        {%- if section.settings.intro != blank -%}
+          <p class="ritual__intro">{{ section.settings.intro }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="ritual__list">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: routes.all_products_collection_url }}"
+           class="ritual-row reveal"
+           {{ block.shopify_attributes }}>
+          <div class="ritual-row__body">
+            <span class="ritual-row__name">{{ block.settings.name }}</span>
+            <span class="ritual-row__descriptor">{{ block.settings.descriptor }}</span>
+          </div>
+          <span class="ritual-row__count">
+            <span class="ritual-row__count-num">{{ block.settings.count }}</span><span class="ritual-row__count-label">{{ block.settings.count_label | default: 'steps' }}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The Ritual",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "The Ritual" },
+    { "type": "textarea", "id": "intro", "label": "Intro line", "default": "Skincare is a sequence. Choose where to start." }
+  ],
+  "blocks": [
+    {
+      "type": "ritual",
+      "name": "Ritual",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Ritual name", "default": "Morning Ritual" },
+        { "type": "text", "id": "descriptor", "label": "Descriptor", "default": "cleanse, treat, protect" },
+        { "type": "number", "id": "count", "label": "Step count", "default": 4 },
+        { "type": "text", "id": "count_label", "label": "Count label", "default": "steps" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "The Ritual",
+      "blocks": [
+        { "type": "ritual", "settings": { "name": "Morning Ritual",   "descriptor": "cleanse, treat, protect",  "count": 4 } },
+        { "type": "ritual", "settings": { "name": "Evening Reset",    "descriptor": "strip, restore, repair",   "count": 5 } },
+        { "type": "ritual", "settings": { "name": "Weekly Treatment", "descriptor": "exfoliate & mask",         "count": 3 } },
+        { "type": "ritual", "settings": { "name": "Targeted Repair",  "descriptor": "concern-specific actives", "count": 6 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+<style>
+  .page-main {
+    padding-block: var(--space-8);
+  }
+
+  .page-main__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-4);
+  }
+
+  .page-main__content {
+    max-width: 70ch;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: var(--color-accent-warm);
+  }
+
+  .page-main__content h2,
+  .page-main__content h3 {
+    font-family: var(--font-display);
+    color: var(--color-black);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+  }
+
+  .page-main__content h2 { font-size: var(--text-xl); }
+  .page-main__content h3 { font-size: var(--text-lg); }
+
+  .page-main__content p { margin-block: var(--space-1); }
+  .page-main__content ul, .page-main__content ol { padding-left: var(--space-3); margin-block: var(--space-2); }
+  .page-main__content li { margin-block: 4px; }
+  .page-main__content a { color: var(--color-black); text-decoration: underline; }
+</style>
+
+<section class="container page-main">
+  <h1 class="page-main__title">{{ page.title }}</h1>
+  <div class="page-main__content rte">
+    {{ page.content }}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Main",
+  "settings": []
+}
+{% endschema %}

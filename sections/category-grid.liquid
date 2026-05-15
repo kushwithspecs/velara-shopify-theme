@@ -1,0 +1,217 @@
+<style>
+  .categories { background-color: var(--color-cream); }
+  .categories__title {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    margin-bottom: var(--space-5);
+  }
+  .categories__title em { font-style: italic; color: var(--color-terracotta); }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  @media (min-width: 810px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .category-card {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-black);
+    display: block;
+    color: var(--color-black);
+    isolation: isolate;
+    transition: transform var(--transition-base);
+  }
+  .category-card:hover { transform: translate(-2px, -2px); }
+  .category-card--full { grid-column: 1 / -1; aspect-ratio: 16 / 7; }
+
+  .category-card__image {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  /* Pastel side panel — each card gets a different colour */
+  .category-card__panel {
+    position: absolute;
+    top: 0; right: 0;
+    width: 38%; height: 100%;
+    z-index: 1;
+  }
+  .category-card--full .category-card__panel { width: 30%; }
+  .category-card--pink     .category-card__panel { background-color: var(--color-pink); }
+  .category-card--yellow   .category-card__panel { background-color: var(--color-yellow); }
+  .category-card--mint     .category-card__panel { background-color: var(--color-mint); }
+  .category-card--lavender .category-card__panel { background-color: var(--color-lavender); }
+
+  .category-card__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: right;
+  }
+  @media (min-width: 810px) { .category-card__content { padding: var(--space-5); } }
+
+  .category-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+    max-width: 35%;
+  }
+  .category-card--full .category-card__header { max-width: 28%; }
+
+  .category-card__name {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 100, "SOFT" 100;
+    font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+    font-weight: 700;
+    color: var(--color-black);
+    line-height: 1;
+  }
+
+  .category-card__subtitle {
+    font-family: var(--font-script);
+    font-size: var(--text-lg);
+    color: var(--color-black);
+    transform: rotate(-3deg);
+  }
+
+  .category-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    gap: var(--space-2);
+  }
+
+  .category-card__thumb {
+    width: 96px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--color-black);
+    background-color: var(--color-cream);
+  }
+  .category-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .category-card__cta {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-black);
+    background-color: var(--color-cream);
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap var(--transition-base), background-color var(--transition-base);
+  }
+  .category-card__cta::after { content: "→"; transition: transform var(--transition-base); }
+  .category-card:hover .category-card__cta { gap: 10px; background-color: var(--color-white); }
+  .category-card:hover .category-card__cta::after { transform: translateX(2px); }
+
+  .category-card__placeholder {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--color-lavender) 0%, var(--color-pink) 100%);
+    z-index: 0;
+  }
+</style>
+
+<section class="section categories">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="categories__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    <div class="category-grid">
+      {%- assign palette = "pink,yellow,mint,lavender" | split: "," -%}
+      {%- for block in section.blocks -%}
+        {%- assign is_full = false -%}
+        {%- if block.settings.full_width -%}{%- assign is_full = true -%}{%- endif -%}
+        {%- assign colour_index = forloop.index0 | modulo: 4 -%}
+        {%- assign colour = palette[colour_index] -%}
+        <a href="{{ block.settings.link | default: '#' }}"
+           class="category-card category-card--{{ colour }}{% if is_full %} category-card--full{% endif %}"
+           {{ block.shopify_attributes }}>
+          {%- if block.settings.image -%}
+            {{ block.settings.image | image_url: width: 2000 | image_tag:
+               loading: 'lazy',
+               class: 'category-card__image parallax-img',
+               width: block.settings.image.width,
+               height: block.settings.image.height,
+               alt: block.settings.name,
+               sizes: '(min-width: 810px) 50vw, 100vw' }}
+          {%- else -%}
+            <div class="category-card__placeholder"></div>
+          {%- endif -%}
+          <div class="category-card__panel"></div>
+          <div class="category-card__content">
+            <div class="category-card__header">
+              <span class="category-card__name">{{ block.settings.name }}</span>
+              <span class="category-card__subtitle">{{ block.settings.subtitle }}</span>
+            </div>
+            <div class="category-card__footer">
+              {%- if block.settings.thumb -%}
+                <div class="category-card__thumb">
+                  {{ block.settings.thumb | image_url: width: 200 | image_tag:
+                     loading: 'lazy', width: 96, height: 64, alt: '' }}
+                </div>
+              {%- else -%}
+                <span></span>
+              {%- endif -%}
+              <span class="category-card__cta">{{ 'categories.explore' | t }}</span>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category Grid",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section title (optional)", "default": "Shop by <em>category</em>" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        { "type": "image_picker", "id": "thumb", "label": "Product thumbnail" },
+        { "type": "text", "id": "name", "label": "Category name", "default": "Cleansers" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle (handwritten)", "default": "start fresh" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Category Grid",
+      "blocks": [
+        { "type": "category", "settings": { "name": "Cleansers", "subtitle": "start fresh" } },
+        { "type": "category", "settings": { "name": "Moisturisers", "subtitle": "lock it in" } },
+        { "type": "category", "settings": { "name": "Serums", "subtitle": "target & treat", "full_width": true } },
+        { "type": "category", "settings": { "name": "SPF & Protection", "subtitle": "shield daily", "full_width": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,153 @@
+<style>
+  .collection-hero {
+    background-color: var(--color-lavender-soft);
+    padding-block: var(--space-10) var(--space-6);
+    position: relative;
+    overflow: hidden;
+  }
+  .collection-hero--pink   { background-color: var(--color-pink-soft); }
+  .collection-hero--yellow { background-color: var(--color-yellow-soft); }
+  .collection-hero--mint   { background-color: var(--color-mint-soft); }
+
+  .collection-hero::before {
+    content: "";
+    position: absolute;
+    width: 260px; height: 260px;
+    background: var(--color-yellow);
+    border-radius: 50%;
+    top: -90px; right: 12%;
+    opacity: 0.35;
+    filter: blur(28px);
+    pointer-events: none;
+  }
+
+  .collection-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  @media (min-width: 810px) {
+    .collection-hero__grid { grid-template-columns: 1.2fr 1fr; gap: var(--space-6); }
+  }
+
+  .collection-hero__eyebrow {
+    font-family: var(--font-script);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    color: var(--color-terracotta);
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .collection-hero__eyebrow::before { content: "✿ "; }
+
+  .collection-hero__name {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 700;
+    color: var(--color-black);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .collection-hero__name em { font-style: italic; color: var(--color-terracotta); }
+
+  .collection-hero__tagline {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: var(--color-black);
+    opacity: 0.75;
+    max-width: 48ch;
+    margin-top: var(--space-2);
+  }
+
+  .collection-hero__count {
+    margin-top: var(--space-3);
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-black);
+    background-color: var(--color-white);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .collection-hero__image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 2px solid var(--color-black);
+    box-shadow: 8px 8px 0 var(--color-black);
+  }
+  .collection-hero__image { width: 100%; height: 100%; object-fit: cover; }
+  .collection-hero__placeholder {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--color-pink) 0%, var(--color-yellow) 100%);
+  }
+</style>
+
+{%- comment -%}
+  Rotate background colour based on collection handle so each category
+  gets a different vibe without merchant config.
+{%- endcomment -%}
+{%- assign hero_palette = "pink,yellow,mint,lavender" | split: "," -%}
+{%- assign hero_index = collection.title | size | modulo: 4 -%}
+{%- assign hero_colour = hero_palette[hero_index] -%}
+
+<section class="collection-hero collection-hero--{{ hero_colour }}">
+  <div class="container">
+    <div class="collection-hero__grid">
+      <div class="collection-hero__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="collection-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h1 class="collection-hero__name">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <p class="collection-hero__tagline">{{ collection.description | strip_html | truncate: 200 }}</p>
+        {%- elsif section.settings.tagline != blank -%}
+          <p class="collection-hero__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+        <span class="collection-hero__count">
+          {{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}
+        </span>
+      </div>
+
+      <div class="collection-hero__image-wrap">
+        {%- if collection.image -%}
+          {{ collection.image | image_url: width: 1400 | image_tag:
+             loading: 'eager',
+             class: 'collection-hero__image parallax-img',
+             width: collection.image.width,
+             height: collection.image.height,
+             alt: collection.title,
+             sizes: '(min-width: 810px) 45vw, 100vw' }}
+        {%- elsif section.settings.fallback_image -%}
+          {{ section.settings.fallback_image | image_url: width: 1400 | image_tag:
+             loading: 'eager',
+             class: 'collection-hero__image parallax-img',
+             width: section.settings.fallback_image.width,
+             height: section.settings.fallback_image.height,
+             alt: collection.title,
+             sizes: '(min-width: 810px) 45vw, 100vw' }}
+        {%- else -%}
+          <div class="collection-hero__placeholder"></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (handwritten)", "default": "shop the collection" },
+    { "type": "textarea", "id": "tagline", "label": "Fallback tagline" },
+    { "type": "image_picker", "id": "fallback_image", "label": "Fallback image" }
+  ]
+}
+{% endschema %}

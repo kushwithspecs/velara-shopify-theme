@@ -1,0 +1,50 @@
+<style>
+  .related__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-4);
+  }
+
+  .related__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+
+  @media (max-width: 1199.98px) {
+    .related__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 809.98px) {
+    .related__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section class="section">
+  <div class="container">
+    <h2 class="related__title">{{ section.settings.title | default: 'product.related_title' | t }}</h2>
+    <div class="related__grid">
+      {%- assign source_collection = product.collections.first -%}
+      {%- if source_collection -%}
+        {%- assign rendered = 0 -%}
+        {%- for related in source_collection.products -%}
+          {%- if related.id != product.id and rendered < 4 -%}
+            {%- render 'product-card', product: related -%}
+            {%- assign rendered = rendered | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Related",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "You Might Also Like" }
+  ]
+}
+{% endschema %}

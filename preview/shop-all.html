@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop All — VELARA</title>
+  <meta name="description" content="Every formula in one place — Velara's full skincare catalogue.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="stylesheet" href="../assets/velara-base.css">
+  <link rel="stylesheet" href="../assets/velara-fonts.css">
+  <link rel="stylesheet" href="../assets/velara-animations.css">
+  <link rel="stylesheet" href="../assets/velara-layout.css">
+
+  <style>
+    /* ── Header (same as homepage) ─────────────── */
+    .site-header { position: sticky; top: 0; z-index: 100; background-color: var(--color-cream); border-bottom: 1px solid rgba(28,28,32,0.08); }
+    .site-header__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; height: 72px; gap: var(--space-3); }
+    .site-header__logo { font-family: var(--font-display); font-variation-settings: "opsz" 100, "SOFT" 100; font-size: 1.5rem; font-weight: 700; color: var(--color-black); letter-spacing: -0.02em; }
+    .site-header__logo .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-pink); margin-left: 4px; vertical-align: 4px; }
+    .site-header__nav { display: none; justify-content: center; gap: var(--space-3); }
+    .site-header__nav a { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-black); padding: 8px 16px; border-radius: var(--radius-pill); transition: background-color var(--transition-base); }
+    .site-header__nav a:hover, .site-header__nav a.is-active { background-color: var(--color-mint-soft); }
+    .site-header__icons { display: flex; align-items: center; gap: var(--space-1); }
+    .site-header__icons button, .site-header__icons a { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; color: var(--color-black); position: relative; border-radius: var(--radius-pill); transition: background-color var(--transition-base); }
+    .cart-count { position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--radius-pill); background-color: var(--color-pink); color: var(--color-black); font-family: var(--font-body); font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--color-cream); }
+    .hamburger { width: 28px; height: 28px; display: inline-flex; flex-direction: column; justify-content: center; gap: 5px; }
+    .hamburger__bar { display: block; width: 22px; height: 2px; background-color: var(--color-black); border-radius: 999px; transition: transform var(--transition-base); }
+    @media (min-width: 1200px) { .site-header__nav { display: flex; } .site-header__hamburger { display: none; } }
+    @media (max-width: 1199.98px) { .site-header__nav { display: none; } }
+
+    /* ── Shop All Hero ─────────────────────────── */
+    .shop-hero { background-color: var(--color-pink-soft); padding-block: var(--space-10) var(--space-6); position: relative; overflow: hidden; }
+    .shop-hero::before { content: ""; position: absolute; width: 280px; height: 280px; background: var(--color-yellow); border-radius: 50%; top: -100px; right: 8%; opacity: 0.35; filter: blur(30px); pointer-events: none; }
+    .shop-hero::after  { content: ""; position: absolute; width: 220px; height: 220px; background: var(--color-mint);   border-radius: 50%; bottom: -90px; left: 10%; opacity: 0.4; filter: blur(30px); pointer-events: none; }
+    .shop-hero__inner { position: relative; z-index: 1; }
+    .shop-hero__eyebrow { font-family: var(--font-script); font-size: clamp(1.5rem, 2.5vw, 2rem); color: var(--color-terracotta); transform: rotate(-3deg); display: inline-block; margin-bottom: var(--space-1); }
+    .shop-hero__eyebrow::before { content: "✿ "; }
+    .shop-hero__title { font-family: var(--font-display); font-variation-settings: "opsz" 144, "SOFT" 100; font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; color: var(--color-black); line-height: 0.95; letter-spacing: -0.03em; max-width: 18ch; }
+    .shop-hero__title em { font-style: italic; color: var(--color-terracotta); }
+    .shop-hero__sub { font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-black); opacity: 0.75; max-width: 56ch; margin-top: var(--space-3); }
+    .shop-hero__pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: var(--space-5); }
+    .shop-hero__pill { font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600; padding: 10px 18px; border-radius: var(--radius-pill); border: 1.5px solid var(--color-black); background: var(--color-white); color: var(--color-black); display: inline-flex; align-items: center; gap: 6px; transition: transform var(--transition-base), background-color var(--transition-base); text-decoration: none; }
+    .shop-hero__pill:hover { transform: translateY(-2px); }
+    .shop-hero__pill--pink { background: var(--color-pink); } .shop-hero__pill--yellow { background: var(--color-yellow); } .shop-hero__pill--mint { background: var(--color-mint); } .shop-hero__pill--lavender { background: var(--color-lavender); }
+    .shop-hero__pill__count { font-family: var(--font-display); font-variation-settings: "SOFT" 100; font-weight: 700; opacity: 0.65; }
+
+    /* ── Catalogue ─────────────────────────────── */
+    .catalogue { background-color: var(--color-cream); padding-block: var(--space-6) var(--space-10); }
+    .filter-group { display: flex; flex-direction: column; gap: 6px; }
+    .filter-group__label { font-family: var(--font-script); font-size: var(--text-base); color: var(--color-terracotta); }
+    .filter-group__pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .catalogue__filters { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-4); align-items: flex-start; }
+    .filter-pill { font-family: var(--font-body); font-size: var(--text-sm); font-weight: 500; padding: 8px 16px; border-radius: var(--radius-pill); border: 1.5px solid var(--color-black); background-color: var(--color-white); color: var(--color-black); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background-color var(--transition-base), transform var(--transition-base); text-decoration: none; }
+    .filter-pill:hover { transform: translateY(-1px); background-color: var(--color-pink-soft); }
+    .filter-pill--active { background-color: var(--color-black); color: var(--color-white); }
+    .filter-pill__count { font-family: var(--font-body); font-size: var(--text-xs); opacity: 0.65; font-weight: 600; }
+    .filter-pill--clear { background: var(--color-pink); border-style: dashed; }
+    .filter-pill--clear::before { content: "✕"; font-weight: 700; }
+
+    .catalogue__toolbar { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; justify-content: space-between; padding: var(--space-3) 0; margin-bottom: var(--space-4); border-bottom: 1.5px dashed var(--color-black); }
+    .catalogue__count { font-family: var(--font-script); font-size: var(--text-xl); color: var(--color-terracotta); }
+    .catalogue__sort { display: flex; align-items: center; gap: var(--space-1); }
+    .catalogue__sort-label { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-black); font-weight: 600; }
+    .catalogue__sort select { font-family: var(--font-body); font-size: var(--text-sm); font-weight: 500; padding: 8px 32px 8px 14px; border: 1.5px solid var(--color-black); border-radius: var(--radius-pill); background-color: var(--color-white); color: var(--color-black); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%231C1C20' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+    .catalogue__sort select:hover { background-color: var(--color-yellow-soft); }
+
+    .catalogue__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+    @media (max-width: 1199.98px) { .catalogue__grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 809.98px)  { .catalogue__grid { grid-template-columns: 1fr; } }
+
+    /* Product card (mirrors snippets/product-card.liquid) */
+    .product-card { display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-black); text-decoration: none; transition: transform var(--transition-base); }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card__media { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: var(--radius-lg); border: 2px solid var(--color-black); background-color: var(--color-white); box-shadow: 6px 6px 0 var(--color-black); transition: box-shadow var(--transition-base); }
+    .product-card:hover .product-card__media { box-shadow: 3px 3px 0 var(--color-black); }
+    .product-card__media img { width: 100%; height: 100%; object-fit: contain; transition: transform var(--transition-slow); }
+    .product-card:hover .product-card__media img { transform: scale(1.05); }
+    .product-card__body { display: flex; flex-direction: column; gap: 8px; padding-inline: 4px; }
+    .product-card__title { font-family: var(--font-display); font-variation-settings: "opsz" 100, "SOFT" 80; font-size: var(--text-lg); font-weight: 600; color: var(--color-black); text-decoration: none; line-height: 1.15; }
+    .product-card__title:hover { color: var(--color-terracotta); }
+    .product-card__meta-row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+    .product-card__rating { display: inline-flex; align-items: center; gap: 2px; }
+    .product-card__rating .star { fill: var(--color-black); }
+    .product-card__rating .star--empty { fill: rgba(28,28,32,0.18); }
+    .product-card__rating-count { font-family: var(--font-body); font-size: var(--text-xs); color: rgba(28,28,32,0.6); margin-left: 6px; font-weight: 500; }
+    .product-card__price-row { display: inline-flex; align-items: baseline; gap: 8px; font-family: var(--font-body); font-weight: 700; font-size: var(--text-lg); }
+    .product-card__compare { color: rgba(28,28,32,0.4); font-size: var(--text-sm); font-weight: 500; text-decoration: line-through; }
+    .product-card__price { font-family: var(--font-body); font-size: var(--text-lg); font-weight: 700; color: var(--color-black); }
+    .product-card__currency { font-size: 0.85em; color: var(--color-terracotta); margin-right: 2px; font-weight: 600; }
+    .product-card__compare .product-card__currency { color: inherit; }
+    .product-card__tagline { font-family: var(--font-body); font-size: var(--text-sm); color: rgba(28,28,32,0.75); line-height: 1.35; margin: 0; }
+    .product-card__promo { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-pill); background-color: var(--color-lavender); color: var(--color-black); font-family: var(--font-body); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; width: max-content; max-width: 100%; }
+    .product-card__cta { display: block; width: 100%; padding: 14px 16px; font-family: var(--font-body); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; color: var(--color-black); background-color: var(--color-mint); border: 2px solid var(--color-black); border-radius: var(--radius-md); cursor: pointer; transition: background-color var(--transition-base), transform var(--transition-base); text-decoration: none; margin-top: 4px; }
+    .product-card__cta:hover { background-color: var(--color-yellow); }
+    .product-card__cta:active { transform: translateY(1px); }
+
+    .sticker { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 8px 14px; border-radius: var(--radius-pill); border: 1.5px solid var(--color-black); font-family: var(--font-body); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; transform: rotate(-6deg); transition: transform var(--transition-base); background: var(--color-red); color: var(--color-white); }
+    .product-card:hover .sticker { transform: rotate(-3deg) scale(1.05); }
+    .sticker--new { background: var(--color-yellow); color: var(--color-black); }
+    .sticker--loved { background: var(--color-mint); color: var(--color-black); top: auto; left: auto; bottom: 16px; right: 16px; transform: rotate(8deg); }
+    .product-card:hover .sticker--loved { transform: rotate(4deg) scale(1.05); }
+    .sticker--loved::before { content: "♡ "; }
+
+    /* Pagination */
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 6px; padding-block: var(--space-8) var(--space-2); flex-wrap: wrap; }
+    .pagination a, .pagination span { font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600; padding: 8px 14px; border: 1.5px solid var(--color-black); border-radius: var(--radius-pill); color: var(--color-black); background-color: var(--color-white); text-decoration: none; }
+    .pagination a:hover { background-color: var(--color-mint); }
+    .pagination .current { background-color: var(--color-black); color: var(--color-white); }
+
+    /* Footer (slim, reuses homepage style) */
+    .site-footer { background-color: var(--color-black); color: var(--color-cream); padding-block: var(--space-8) var(--space-4); border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin-top: var(--space-6); }
+    .site-footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+    .site-footer__copyright { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-mint); font-weight: 600; }
+    .site-footer__legal { display: flex; gap: var(--space-2); }
+    .site-footer__legal a { font-family: var(--font-body); font-size: var(--text-xs); color: var(--color-cream); padding: 6px 14px; border-radius: var(--radius-pill); border: 1.5px solid var(--color-mint); font-weight: 500; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a href="index.html" class="site-header__logo">velara<span class="dot"></span></a>
+    <nav class="site-header__nav" aria-label="Primary">
+      <a href="shop-all.html" class="is-active">Shop All</a>
+      <a href="#">Cleansers</a>
+      <a href="#">Serums</a>
+      <a href="#">Moisturisers</a>
+      <a href="#">SPF</a>
+      <a href="index.html">Home</a>
+    </nav>
+    <div class="site-header__icons">
+      <a href="#" aria-label="Search" class="show-desktop-only">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="6"/><line x1="13.5" y1="13.5" x2="17.5" y2="17.5"/></svg>
+      </a>
+      <a href="#" aria-label="Cart">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 7h12l-1 11H6L5 7z"/><path d="M8 7V5a3 3 0 0 1 6 0v2"/></svg>
+        <span class="cart-count">2</span>
+      </a>
+      <button type="button" class="hamburger site-header__hamburger" aria-label="Menu">
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Shop All Hero -->
+  <section class="shop-hero">
+    <div class="container shop-hero__inner">
+      <span class="shop-hero__eyebrow">everything in one place</span>
+      <h1 class="shop-hero__title">Shop <em>everything</em></h1>
+      <p class="shop-hero__sub">Every formula, every drop, every ritual. Filter by category, skin concern, or sale — whatever your skin's craving.</p>
+      <div class="shop-hero__pills">
+        <a href="#" class="shop-hero__pill shop-hero__pill--pink">Cleansers <span class="shop-hero__pill__count">(12)</span></a>
+        <a href="#" class="shop-hero__pill shop-hero__pill--yellow">Moisturisers <span class="shop-hero__pill__count">(09)</span></a>
+        <a href="#" class="shop-hero__pill shop-hero__pill--mint">Serums <span class="shop-hero__pill__count">(14)</span></a>
+        <a href="#" class="shop-hero__pill shop-hero__pill--lavender">SPF & Protection <span class="shop-hero__pill__count">(06)</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalogue -->
+  <section class="catalogue">
+    <div class="container">
+      <!-- Filter pills -->
+      <div class="catalogue__filters">
+        <div class="filter-group">
+          <span class="filter-group__label">skin concern</span>
+          <div class="filter-group__pills">
+            <a href="#" class="filter-pill filter-pill--active">Dryness <span class="filter-pill__count">12</span></a>
+            <a href="#" class="filter-pill">Acne <span class="filter-pill__count">09</span></a>
+            <a href="#" class="filter-pill">Pigmentation <span class="filter-pill__count">14</span></a>
+            <a href="#" class="filter-pill">Sensitivity <span class="filter-pill__count">08</span></a>
+            <a href="#" class="filter-pill">Anti-aging <span class="filter-pill__count">17</span></a>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-group__label">price</span>
+          <div class="filter-group__pills">
+            <a href="#" class="filter-pill">Under ₹1000 <span class="filter-pill__count">18</span></a>
+            <a href="#" class="filter-pill">₹1000–₹2000 <span class="filter-pill__count">22</span></a>
+            <a href="#" class="filter-pill">Over ₹2000 <span class="filter-pill__count">07</span></a>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-group__label">on sale</span>
+          <div class="filter-group__pills">
+            <a href="#" class="filter-pill">Show sale only <span class="filter-pill__count">11</span></a>
+          </div>
+        </div>
+        <a href="#" class="filter-pill filter-pill--clear">Clear filters</a>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="catalogue__toolbar">
+        <span class="catalogue__count">12 products</span>
+        <form class="catalogue__sort" onsubmit="return false">
+          <label for="SortBy" class="catalogue__sort-label">Sort:</label>
+          <select id="SortBy">
+            <option>Featured</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+            <option>Newest</option>
+            <option>Best Selling</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- Grid -->
+      <div class="catalogue__grid">
+        
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker">sale</span>
+            <img src="images/products/caffeine-solution-5pct-egcg-30ml.png" alt="Radiant Serum">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Radiant Serum</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                <s class="product-card__compare"><span class="product-card__currency">₹</span>2,400</s>
+                <span class="product-card__price"><span class="product-card__currency">₹</span>1,800</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Brightens & smooths dullness</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>2 MINIS + FREE SHIPPING</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker sticker--new">new</span>
+            <img src="images/products/natural-moisturizing-factors-ha-30ml.png" alt="Barrier Cream">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Barrier Cream</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>850</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Repairs and locks in moisture</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>GIFT WITH PURCHASE</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker">sale</span>
+            <img src="images/products/uv-filters-spf-45-serum-int-60ml.png" alt="SPF 50 Fluid">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">SPF 50 Fluid</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="4 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--empty" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                <s class="product-card__compare"><span class="product-card__currency">₹</span>1,750</s>
+                <span class="product-card__price"><span class="product-card__currency">₹</span>1,400</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Daily UV shield, no white cast</p>
+            
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker sticker--loved">skin loved</span>
+            <img src="images/products/glyc-acid-7pct-100ml-Aug-UPC.png" alt="Foam Cleanser">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Foam Cleanser</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>650</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Gentle, sulphate-free, daily cleanse</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>FREE SHIPPING</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker sticker--new">new</span>
+            <img src="images/products/multi-peptide-ha-serum-30ml.png" alt="Vitamin C Drops">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Vitamin C Drops</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="4 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--empty" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>2,100</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">10% L-AA for visible brightening</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>EARLY ACCESS</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            
+            <img src="images/products/hyaluronic-acid-2pct-B5-30ml-Clr-Acu.png" alt="Hydra Gel">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Hydra Gel</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>950</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Lightweight hydration for oily skin</p>
+            
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker">sale</span>
+            <img src="images/products/multi-active-delivery-essence-100ml.png" alt="Gentle Cleanser">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Gentle Cleanser</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="4 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--empty" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                <s class="product-card__compare"><span class="product-card__currency">₹</span>850</s>
+                <span class="product-card__price"><span class="product-card__currency">₹</span>720</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">pH-balanced, fragrance-free</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>2 MINIS + FREE SHIPPING</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            
+            <img src="images/products/niacinamide-10pct-zinc-1pct-30ml.png" alt="Niacinamide 10%">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Niacinamide 10%</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>1,150</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Pore-refining + oil-balancing serum</p>
+            
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker sticker--new">new</span>
+            <img src="images/products/multi-peptide-copper-peptides-1pct-serum-30ml.png" alt="Overnight Mask">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Overnight Mask</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>1,650</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Plump and recover while you sleep</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>TRY-IT KIT INCLUDED</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker">sale</span>
+            <img src="images/products/multi-peptide-serum-for-hair-density-60ml.png" alt="Retinol Drops">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Retinol Drops</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="4 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--empty" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                <s class="product-card__compare"><span class="product-card__currency">₹</span>3,200</s>
+                <span class="product-card__price"><span class="product-card__currency">₹</span>2,400</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Encapsulated 0.3% for sensitive skin</p>
+            
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            
+            <img src="images/products/pha-5pct-lip-exfoliating-serum-15ml.png" alt="Eye Cream">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Eye Cream</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>1,200</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Caffeine + peptides for tired eyes</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>GIFT WITH PURCHASE</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+        <article class="product-card">
+          <a href="#" class="product-card__media">
+            <span class="sticker sticker--loved">skin loved</span>
+            <img src="images/products/serum-foundation-31-y-30ml.png" alt="Sun Drops SPF 30">
+          </a>
+          <div class="product-card__body">
+            <a href="#" class="product-card__title">Sun Drops SPF 30</a>
+            <div class="product-card__meta-row">
+              <div class="product-card__rating" aria-label="5 out of 5 stars"><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg><svg class="star star--filled" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M6 .8l1.5 3.4 3.7.4-2.8 2.5.8 3.6L6 8.9 2.8 10.7l.8-3.6L.8 4.6l3.7-.4z"/></svg></div>
+              <div class="product-card__price-row">
+                
+                <span class="product-card__price"><span class="product-card__currency">₹</span>1,300</span>
+              </div>
+            </div>
+            <p class="product-card__tagline">Tinted glow + invisible protection</p>
+            <span class="product-card__promo"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="4.5" width="11" height="8" rx="1"/><line x1="1.5" y1="7.5" x2="12.5" y2="7.5"/><line x1="7" y1="4.5" x2="7" y2="12.5"/><path d="M7 4.5C7 3 5.5 2 4.5 2.5S4 4.5 5 4.5h2"/><path d="M7 4.5C7 3 8.5 2 9.5 2.5S10 4.5 9 4.5H7"/></svg>FREE SHIPPING</span>
+            <button type="button" class="product-card__cta">ADD TO CART</button>
+          </div>
+        </article>
+      
+      </div>
+
+      <!-- Pagination -->
+      <nav class="pagination" aria-label="Pagination">
+        <span class="current">1</span>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">Next →</a>
+      </nav>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__bottom">
+    <span class="site-footer__copyright">© 2026 velara · made with care</span>
+    <nav class="site-footer__legal">
+      <a href="#">Return policy</a>
+      <a href="#">Terms of use</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/nav.js" defer></script>
+<script src="../assets/reveal.js" defer></script>
+</body>
+</html>
